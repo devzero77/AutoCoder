@@ -19,8 +19,10 @@ jobs:
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
         run: |
           echo "Issue Number: $ISSUE_NUMBER"
           echo "Issue Title: $ISSUE_TITLE"
           echo "Issue Body: $ISSUE_BODY"
           echo "Issue Labels: $ISSUE_LABELS"
+          echo: "Issue Assignees: $ISSUE_ASSIGNEES"
