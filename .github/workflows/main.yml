@@ -25,4 +25,4 @@ jobs:
           echo "Issue Title: $ISSUE_TITLE"
           echo "Issue Body: $ISSUE_BODY"
           echo "Issue Labels: $ISSUE_LABELS"
-          echo: "Issue Assignees: $ISSUE_ASSIGNEES"
+          echo "Issue Assignees: $ISSUE_ASSIGNEES"
