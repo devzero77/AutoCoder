@@ -1,1 +1,35 @@
+name: Issue Reader
+
+on:
+  issues:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  read-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Echo issue information
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.issue.number }}
+          ISSUE_TITLE=${{ github.event.issue.title }}
+          ISSUE_BODY=${{ github.event.issue.body }}
+          ISSUE_LABELS=${{ join(github.event.issue.labels.*.name, ', ') }}
+          ISSUE_ASSIGNEES=${{ join(github.event.issue.assignees.*.login, ', ') }}
+          
+          echo "Issue Number: $ISSUE_NUMBER"
+          echo "Issue Title: $ISSUE_TITLE"
+          echo "Issue Body: $ISSUE_BODY"
+          echo "Issue Labels: $ISSUE_LABELS"
+          echo "Issue Assignees: $ISSUE_ASSIGNEES"
+          
+          # Example of using curl to retrieve issue details (optional)
+          ISSUE_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER)
+          echo "Issue Information: $ISSUE_RESPONSE"
 
