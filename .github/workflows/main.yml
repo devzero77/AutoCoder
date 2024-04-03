@@ -20,8 +20,8 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
         run: |
-          echo "Issue Number: $1"
-          echo "Issue Title: $2"
-          echo "Issue Body: $3"
-          echo "Issue Labels: $3"
+          echo -p "Issue Number: $1"
+          echo -p "Issue Title: $2"
+          echo -p "Issue Body: $3"
+          echo -p "Issue Labels: $3"
 
