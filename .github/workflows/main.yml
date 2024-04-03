@@ -17,17 +17,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ISSUE_NUMBER=${{ github.event.issue.number }}
-          ISSUE_TITLE=${{ github.event.issue.title }}
-          ISSUE_BODY=${{ github.event.issue.body }}
-          ISSUE_LABELS=${{ join(github.event.issue.labels.*.name, ', ') }}
-          ISSUE_ASSIGNEES=${{ join(github.event.issue.assignees.*.login, ', ') }}
-          
-          echo "Issue Number: $ISSUE_NUMBER"
-          echo "Issue Title: $ISSUE_TITLE"
-          echo "Issue Body: $ISSUE_BODY"
-          echo "Issue Labels: $ISSUE_LABELS"
-          echo "Issue Assignees: $ISSUE_ASSIGNEES"
+          echo "Issue Number: ${{ github.event.issue.number }}"
+          echo "Issue Title: ${{ github.event.issue.title }}"
+          echo "Issue Body: ${{ github.event.issue.body }}"
+          echo "Issue Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+          echo "Issue Assignees: ${{ join(github.event.issue.assignees.*.login, ', ') }}"
           
           # Example of using curl to retrieve issue details (optional)
           ISSUE_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER)
