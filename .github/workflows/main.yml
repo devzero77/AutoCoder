@@ -1,28 +1,44 @@
-name: Issue Reader
+name: Generate Code using ChatGPT and script.sh
 
 on:
   issues:
-    types:
-      - opened
-      - reopened
+    types: [opened, edited]
 
 jobs:
-  read-issue:
+  generate-code:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Echo issue information
+
+      - name: Set permissions for script.sh
+        run: chmod +x ./AutoCoder/stage5/script.sh
+
+      - name: Run script.sh
+        run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.issue.number }} ${{ secrets.OPENAI_API_KEY }}
         env:
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_TITLE: ${{ github.event.issue.title }}
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
-          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload generated files as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-code
+          path: ./**/*
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: generated-code
+          path: generated-code
+
+      - name: List files in the artifact
+        run: ls -R generated-code
+
+      - name: Display content of generated files
         run: |
-          echo "Issue Number: $ISSUE_NUMBER"
-          echo "Issue Title: $ISSUE_TITLE"
-          echo "Issue Body: $ISSUE_BODY"
-          echo "Issue Labels: $ISSUE_LABELS"
-          echo "Issue Assignees: $ISSUE_ASSIGNEES"
+          for file in $(find generated-code -type f); do
+            echo "Content of $file:"
+            cat "$file"
+            echo ""
+          done
