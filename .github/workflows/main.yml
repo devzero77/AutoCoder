@@ -2,7 +2,10 @@ name: Generate Code using ChatGPT and script.sh
 
 on:
   issues:
-    types: [opened, edited]
+    types:
+      - opened
+      - reopened
+      - labeled
 
 jobs:
   generate-code:
