@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set permissions for script.sh
-        run: chmod +x ./AutoCoder/stage5/script.sh
+        run: chmod +x ./scripts/script.sh
 
       - name: Run script.sh
         run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.issue.number }} ${{ secrets.OPENAI_API_KEY }}
