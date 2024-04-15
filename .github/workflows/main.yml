@@ -1,4 +1,4 @@
-name: Generate Code using ChatGPT and script.sh
+name: Issue Interaction with ChatGPT
 
 on:
   issues:
@@ -7,41 +7,22 @@ on:
       - reopened
       - labeled
 
-jobs:
-  generate-code:
-    runs-on: ubuntu-latest
+permissions:
+  contents: write
+  pull-requests: write
 
+jobs:
+  interact-with-chatgpt:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set permissions for script.sh
-        run: chmod +x ./scripts/script.sh
-
-      - name: Run script.sh
-        run: ./scripts/script.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} ${{ github.event.issue.number }} ${{ secrets.OPENAI_API_KEY }}
-        env:
+      - name: Interact with ChatGPT
+        uses: the-nulldev/AutoCoder@main
+        with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload generated files as artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-code
-          path: ./**/*
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-code
-          path: generated-code
-
-      - name: List files in the artifact
-        run: ls -R generated-code
-
-      - name: Display content of generated files
-        run: |
-          for file in $(find generated-code -type f); do
-            echo "Content of $file:"
-            cat "$file"
-            echo ""
-          done
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
