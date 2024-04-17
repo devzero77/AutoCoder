@@ -1,28 +1,13 @@
-name: Issue Interaction with ChatGPT
+name: Say Hello
 
 on:
-  issues:
-    types:
-      - opened
-      - reopened
-      - labeled
-
-permissions:
-  contents: write
-  pull-requests: write
+  push:
+    branches:
+      - main
 
 jobs:
-  interact-with-chatgpt:
+  say_hello:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'autocoder-bot')
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Interact with ChatGPT
-        uses: the-nulldev/AutoCoder@main
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      - name: Say Hello
+        run: echo "Hello, World!"
