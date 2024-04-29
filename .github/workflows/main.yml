@@ -1,7 +1,10 @@
 name: Generate Code using ChatGPT and script.sh
 
 on:
-  push
+  issues:
+    types:
+      - opened
+      - reopened
 
 jobs:
   say_hello:
@@ -10,5 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Say hello
-        run: echo "Hello, World"
+      - name: Print issue information
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_ASSIGNEES: ${{ join(github.event.issue.assignees.*.login, ', ') }}
+          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ', ') }}
+        run:
+          echo $1
+          echo $2
+          echo $3
+          echo $4
+          echo $5
