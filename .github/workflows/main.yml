@@ -24,4 +24,4 @@ jobs:
           echo "Issue Title: $ISSUE_TITLE"
           echo "Issue Body: $ISSUE_BODY"
           echo "Issue Assignees: $ISSUE_ASSIGNEES"
-          echo "Issue Lables: $ISSUE_LABELS"
+          echo "Issue Labels: $ISSUE_LABELS"
